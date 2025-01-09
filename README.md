@@ -1,10 +1,17 @@
-# Video Sharing App
+# VideoShare
 
-An app for users to upload and share videos, similar to YouTube.
+VideoShare is a platform that allows users to upload, share, and view videos, similar to YouTube.
 
 ## User Journeys
 
-1. [Sign Up and Sign In](docs/journeys/sign-up-and-sign-in.md) - Users can create an account and sign in.
-2. [Upload Video](docs/journeys/upload-video.md) - Users can upload videos to share with others.
-3. [View Videos](docs/journeys/view-videos.md) - Users can view a list of uploaded videos.
-4. [Watch Video](docs/journeys/watch-video.md) - Users can watch selected videos.
+1. [Sign Up and Sign In](docs/journeys/sign-up-sign-in.md) - Create an account and log in to the platform.
+2. [Upload Video](docs/journeys/upload-video.md) - Upload a new video with a title, description, and thumbnail.
+3. [View Videos](docs/journeys/view-videos.md) - Browse and watch uploaded videos.
+4. [Manage Profile](docs/journeys/manage-profile.md) - Update user profile information.
+
+## External APIs
+
+- **Supabase**: Used for authentication, storage, and database management.
+- **Resend**: Used for sending emails.
+- **Umami**: Used for website analytics.
+- **Sentry**: Used for error logging and monitoring.

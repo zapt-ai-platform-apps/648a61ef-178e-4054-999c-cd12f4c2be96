@@ -1,7 +1,7 @@
 {
     "name": "reactjs-vite-tailwind-vercel",
     "version": "1.0.0",
-    "description": "Video Sharing App",
+    "description": "ReactJS app with Vite, Tailwind",
     "type": "module",
     "scripts": {
         "dev": "vite",
@@ -10,15 +10,15 @@
         "start": "vite --host"
     },
     "dependencies": {
-        "@aws-sdk/client-s3": "^3.367.0",
-        "@aws-sdk/s3-request-presigner": "^3.367.0",
         "@sentry/browser": "^8.41.0",
         "@supabase/auth-ui-react": "^0.4.7",
         "@supabase/auth-ui-shared": "^0.1.8",
         "@zapt/zapt-js": "^1.0.6",
+        "drizzle-orm": "^0.33.0",
+        "postgres": "^3.4.5",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "react-router-dom": "^6.14.2"
+        "resend": "^4.0.1"
     },
     "devDependencies": {
         "@vitejs/plugin-react": "^4.3.4",

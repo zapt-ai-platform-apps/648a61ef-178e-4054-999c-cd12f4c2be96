@@ -10,8 +10,8 @@
     }
   ],
   "functions": {
-    "api/*.js": {
-      "includeFiles": "drizzle/schema.js"
+    "api/uploadVideo.js": {
+      "includeFiles": "../drizzle/schema.js"
     }
   }
 }

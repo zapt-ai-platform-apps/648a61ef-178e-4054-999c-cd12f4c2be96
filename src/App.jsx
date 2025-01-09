@@ -1,72 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import VideoUpload from './components/VideoUpload';
-import VideoList from './components/VideoList';
-import VideoPlayer from './components/VideoPlayer';
-import { supabase } from './supabaseClient';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import UploadVideo from './pages/UploadVideo';
+import VideoDetail from './pages/VideoDetail';
+import Navbar from './components/Navbar';
+import Badge from './components/Badge';
 import { Auth } from '@supabase/auth-ui-react';
-import { ThemeSupa } from '@supabase/auth-ui-shared';
+import { supabase } from './supabaseClient';
+import { useState, useEffect } from 'react';
 
-export default function App() {
-  const [session, setSession] = useState(null);
+export default function App(){
+    const [session, setSession] = useState(null);
 
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setSession(session);
+        });
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
+        const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session);
+        });
 
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+        return () => {
+            authListener.subscription.unsubscribe();
+        }
+    }, []);
 
-  if (!session) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div>
-          <h1 className="text-3xl mb-4">Sign in with ZAPT</h1>
-          <Auth
-            supabaseClient={supabase}
-            appearance={{ theme: ThemeSupa }}
-            providers={['google', 'facebook', 'apple']}
-            magicLink={true}
-          />
-          <p className="mt-4">
-            Made on <a href="https://www.zapt.ai" target="_blank" rel="noopener noreferrer" className="text-blue-500">ZAPT</a>
-          </p>
+        <div className="min-h-screen h-full">
+            <Router>
+                <Navbar session={session} />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/upload" element={<UploadVideo />} />
+                    <Route path="/video/:id" element={<VideoDetail />} />
+                </Routes>
+                <Badge />
+            </Router>
+            {!session && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                    <div className="bg-white p-6 rounded shadow-lg">
+                        <h2 className="text-xl mb-4">Sign in with ZAPT</h2>
+                        <a href="https://www.zapt.ai" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline mb-4 block">
+                            Visit ZAPT
+                        </a>
+                        <Auth supabaseClient={supabase} appearance={{ theme: 'dark' }} providers={['google', 'facebook', 'apple']} />
+                    </div>
+                </div>
+            )}
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <Router>
-      <div className="min-h-screen">
-        <nav className="p-4 bg-gray-200 flex justify-between items-center">
-          <div>
-            <Link to="/" className="mr-4 text-blue-500">Videos</Link>
-            <Link to="/upload" className="text-blue-500">Upload Video</Link>
-          </div>
-          <button
-            onClick={() => supabase.auth.signOut()}
-            className="bg-red-500 text-white px-4 py-2 cursor-pointer"
-          >
-            Sign Out
-          </button>
-        </nav>
-        <Routes>
-          <Route path="/" element={<VideoList />} />
-          <Route path="/upload" element={<VideoUpload />} />
-          <Route path="/video/:id" element={<VideoPlayer />} />
-        </Routes>
-        <footer className="p-4 text-center">
-          Made on <a href="https://www.zapt.ai" target="_blank" rel="noopener noreferrer" className="text-blue-500">ZAPT</a>
-        </footer>
-      </div>
-    </Router>
-  );
+    )
 }
